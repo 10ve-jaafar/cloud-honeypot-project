@@ -1,4 +1,4 @@
-# 🔒 AWS Security Groups Configuration
+#  AWS Security Groups Configuration
 
 ## Contexte
 
@@ -35,7 +35,7 @@ Dans ce projet, on configure deux types de règles :
 
 ---
 
-## ⚠️ Règles de sécurité importantes
+##  Règles de sécurité importantes
 
 - Le port **22 (SSH admin)** ne doit JAMAIS être ouvert à `0.0.0.0/0`
 - Les ports **64297 et 64296** (interfaces admin) → restreints à votre IP
@@ -44,4 +44,4 @@ Dans ce projet, on configure deux types de règles :
 
 ---
 
-## 📌 Schéma simplifié
+##  Schéma simplifié
