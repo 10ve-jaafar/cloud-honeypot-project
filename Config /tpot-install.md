@@ -43,7 +43,7 @@ sudo reboot
 
 ---
 
-## ⚠️ Notes importantes
+##  Notes importantes
 
 - Ne jamais partager ton IP publique AWS
 - Désactiver l'instance après les tests pour éviter des frais
