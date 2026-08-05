@@ -14,7 +14,7 @@
 
 ---
 
-## 📌 Présentation
+##  Présentation
 
 Ce projet consiste à déployer un **honeypot cloud** sur Amazon Web Services afin d'exposer intentionnellement un serveur à Internet et d'observer les comportements malveillants en temps réel.
 
@@ -26,7 +26,7 @@ L'objectif est d'analyser :
 
 ---
 
-## 🖼️ Aperçu
+##  Aperçu
 
 <!-- Remplace ces lignes par tes vraies captures d'écran -->
 | Carte des attaques (Kibana) | Dashboard T-Pot |
@@ -35,7 +35,7 @@ L'objectif est d'analyser :
 
 ---
 
-## 🛠️ Stack Technique
+##  Stack Technique
 
 | Composant | Rôle |
 |---|---|
@@ -47,7 +47,7 @@ L'objectif est d'analyser :
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 Internet (Attaquants)
@@ -71,7 +71,7 @@ Internet (Attaquants)
 
 ---
 
-## 🚀 Installation & Déploiement
+##  Installation & Déploiement
 
 ### 1. Créer l'instance AWS EC2
 - Type : `t2.large` minimum recommandé
@@ -107,21 +107,21 @@ Kibana    : https://<YOUR_IP>:64296
 
 ---
 
-## 📊 Résultats Obtenus
+##  Résultats Obtenus
 
 > Données collectées pendant la période d'observation
 
-- 🔴 **+X 000** tentatives d'intrusion détectées
-- 🌍 Attaques provenant de **+XX pays** différents
-- 🔑 Port **SSH (22)** et **HTTP (80)** les plus ciblés
-- 🤖 Présence massive de **bots automatisés** testant des credentials par défaut
-- 📈 Pic d'attaques observé entre **[heure]h et [heure]h**
+-  **+X 000** tentatives d'intrusion détectées
+-  Attaques provenant de **+XX pays** différents
+-  Port **SSH (22)** et **HTTP (80)** les plus ciblés
+-  Présence massive de **bots automatisés** testant des credentials par défaut
+-  Pic d'attaques observé entre **[heure]h et [heure]h**
 
 *(Remplace les valeurs par tes vraies statistiques)*
 
 ---
 
-## 📁 Structure du Projet
+##  Structure du Projet
 
 ```
 honeypot-cloud-aws/
@@ -141,7 +141,7 @@ honeypot-cloud-aws/
 
 ---
 
-## ⚠️ Avertissement
+##  Avertissement
 
 Ce projet est réalisé dans un cadre **strictement académique et éducatif**.  
 Le honeypot a été déployé dans un environnement isolé et contrôlé.  
@@ -149,7 +149,7 @@ Ne jamais exposer de systèmes de production sans mesures de sécurité appropri
 
 ---
 
-## 👥 Auteurs
+##  Auteurs
 
 | Nom | GitHub |
 |---|---|
@@ -161,6 +161,6 @@ Ne jamais exposer de systèmes de production sans mesures de sécurité appropri
 
 ---
 
-## 📄 Licence
+##  Licence
 
 Ce projet est sous licence MIT – voir le fichier [LICENSE](LICENSE) pour plus de détails.
