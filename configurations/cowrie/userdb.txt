@@ -1,0 +1,18 @@
+# Format : username:x:password (* = accepter tout mot de passe)
+# Credentials faibles typiques des systèmes mal sécurisés
+
+root:x:*                # Accepte root avec n'importe quel mot de passe
+root:x:root             # root/root
+root:x:admin            # root/admin
+root:x:password         # root/password
+root:x:123456           # root/123456
+root:x:toor             # root/toor (root inversé)
+admin:x:admin           # admin/admin
+admin:x:password        # admin/password
+admin:x:1234            # admin/1234
+ubuntu:x:ubuntu         # ubuntu/ubuntu
+ubuntu:x:password       # ubuntu/password
+pi:x:raspberry          # Raspberry Pi default credentials
+guest:x:guest           # Compte invité générique
+test:x:test             # Compte test générique
+user:x:user             # Compte utilisateur générique
