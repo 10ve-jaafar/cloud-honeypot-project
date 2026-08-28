@@ -33,6 +33,51 @@ Internet ──► Honeypot (Cowrie + OpenCanary) ──► Filebeat ──► L
 
 Honeypot · OpenCanary · Cowrie SSH Honeypot · AWS · Elastic Stack (ELK) · Threat Intelligence · VPC · GeoIP Enrichment · MITRE ATT&CK · Bastion Host · Security Group · Cyber-déception · VirusTotal Lookup
 
+---
+
+## Folder Structure
+```
+honeypot-cloud-aws/
+├── README.md
+├── docs/
+│   ├── 01-architecture-reseau.md
+│   ├── 02-cowrie-honeypot.md
+│   ├── 03-opencanary-honeypot.md
+│   ├── 04-elk-stack.md
+│   ├── 05-pipeline-donnees.md
+│   ├── 06-visualisations-kibana.md
+│   ├── 07-mitre-attck.md
+│   ├── 08-securite-ethique.md
+│   └── images/            ← tu déposes tes screenshots ici (Figure 1 à 20)
+├── scripts/
+│   ├── 01-setup-honeypot-instance.sh
+│   ├── 02-install-cowrie.sh
+│   ├── 03-install-opencanary.sh
+│   ├── 04-install-elasticsearch.sh
+│   ├── 05-install-logstash.sh
+│   ├── 06-install-kibana.sh
+│   ├── 07-install-filebeat-honeypot.sh
+│   └── 08-open-kibana-tunnel.sh
+├── configurations/
+│   ├── cowrie/
+│   │   ├── cowrie.cfg
+│   │   └── userdb.txt
+│   ├── opencanary/
+│   │   └── opencanary.conf
+│   ├── elasticsearch/
+│   │   └── elasticsearch.yml
+│   ├── logstash/
+│   │   └── honeypot.conf
+│   ├── kibana/
+│   │   └── kibana.yml
+│   └── filebeat/
+│       └── filebeat.yml
+└── lab-setup/
+    ├── 01-vpc-subnets.md
+    ├── 02-security-groups.md
+    └── 03-instances-ec2.md
+```
+
 ## 📊 Résultats clés (3 semaines d'observation — mai 2026)
 
 - **796 079** scans VNC détectés (service le plus ciblé)
