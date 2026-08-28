@@ -1,1 +1,15 @@
+# Réseau
+server.port: 5601
+server.host: "0.0.0.0"
+server.name: "kibana-honeypot"
 
+# Connexion à Elasticsearch
+elasticsearch.hosts: ["http://localhost:9200"]
+elasticsearch.username: "kibana_system"
+elasticsearch.password: "<MOT_DE_PASSE_KIBANA_SYSTEM>"
+
+# Chiffrement des sessions (clé aléatoire 32 caractères)
+xpack.encryptedSavedObjects.encryptionKey: "changez-cette-cle-32-caracteres!"
+
+# Locale
+i18n.locale: "fr"
