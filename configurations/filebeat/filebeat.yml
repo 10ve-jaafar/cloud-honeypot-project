@@ -1,0 +1,45 @@
+filebeat.inputs:
+
+  # ── Source 1 : Logs Cowrie (format JSON) ──
+  - type: log
+    enabled: true
+    paths:
+      - /home/cowrie/cowrie/var/log/cowrie/cowrie.json*
+    json.keys_under_root: true
+    json.add_error_key: true
+    json.expand_keys: true
+    tags: ["cowrie", "honeypot", "ssh"]
+    fields:
+      honeypot_instance: "i-XXXXXXXXXXXXXXXXX"
+      public_ip: "VOTRE_IP_PUBLIQUE"
+      private_ip: "10.0.1.215"
+    fields_under_root: true
+    scan_frequency: 10s
+    close_inactive: 5m
+
+  # ── Source 2 : Logs OpenCanary (format texte brut) ──
+  - type: log
+    enabled: true
+    paths:
+      - /var/tmp/opencanary.log
+    tags: ["opencanary", "honeypot"]
+    fields:
+      honeypot_instance: "i-XXXXXXXXXXXXXXXXX"
+      public_ip: "VOTRE_IP_PUBLIQUE"
+    fields_under_root: true
+    multiline.pattern: '^\{'
+    multiline.negate: true
+    multiline.match: after
+
+# ── Output : Logstash sur elk_server ──
+output.logstash:
+  hosts: ["10.0.2.10:5044"]
+  compression_level: 3
+
+# ── Logging Filebeat ──
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat
+  keepfiles: 7
