@@ -1,0 +1,18 @@
+# Nom du cluster et du nœud
+cluster.name: honeypot-elk-cluster
+node.name: elk-node-1
+
+# Réseau
+network.host: 0.0.0.0
+http.port: 9200
+
+# Découverte — nœud unique
+discovery.type: single-node
+
+# Chemins de données et logs
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+# Sécurité activée
+xpack.security.enabled: true
+xpack.security.http.ssl.enabled: false
