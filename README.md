@@ -19,15 +19,7 @@ Déployer une infrastructure de cybersécurité complète sur **Amazon Web Servi
 
 ## 🏗️ Architecture
 
-Internet ──► Honeypot (Cowrie + OpenCanary) ──► Filebeat ──► Logstash ──► Elasticsearch ──► Kibana
-34.231.57.63 / 10.0.1.215 :5044 :9200 :5601 (tunnel SSH)
-
-
-| Instance | ID | IP Publique | IP Privée | Rôle |
-|---|---|---|---|---|
-| Honeypot | i-0330e1658aac4ce4f | 34.231.57.63 | 10.0.1.215 | Cowrie + OpenCanary + Filebeat |
-| Bastion | i-0142d07f52e78bbcf | 3.221.1.82 | 10.0.1.37 | Jump server admin |
-| ELK Server | i-0cd116b18750b48c9 | — (aucune) | 10.0.2.10 | Elasticsearch + Logstash + Kibana |
+![Honeypot Architecture](./images/honeypot.png)
 
 ## 🔑 Mots-clés
 
