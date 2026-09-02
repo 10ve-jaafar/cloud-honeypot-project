@@ -1,6 +1,4 @@
 #!/bin/bash
-# À exécuter sur l'instance Honeypot (10.0.1.215)
-
 set -e
 
 sudo apt-get install -y python3-dev python3-pip libssl-dev \
@@ -12,4 +10,3 @@ opencanaryd --version
 opencanaryd --copyconfig
 
 sudo opencanaryd --start
-
