@@ -22,6 +22,7 @@ L'ensemble de l'infrastructure est déployé dans un VPC dédié nommé `vpc_hon
 ## Schéma de la chaîne de fonctionnement complète
 
 ![Schéma chaîne ELK](./images/figure-08-schema-chaine-elk.png)
+
 *Figure 8 - Schéma de la chaîne de fonctionnement complète de l'Elastic Stack dans le projet Honeypot AWS*
 
 **Lecture du schéma :** Zone orange (subnet public 10.0.1.0/24) : les honeypots Cowrie et OpenCanary génèrent des logs sur l'instance 10.0.1.215 ; Filebeat les collecte et les envoie via TCP 5044 vers le serveur ELK. Zone bleue (subnet privé 10.0.2.0/24) : Logstash reçoit, parse et enrichit les événements (GeoIP, MITRE ATT&CK), les indexe dans Elasticsearch, et Kibana les visualise. L'analyste accède à Kibana via un tunnel SSH depuis la Bastion Host, sans jamais exposer le port 5601 sur Interne
