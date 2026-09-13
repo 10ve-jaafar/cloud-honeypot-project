@@ -19,7 +19,7 @@ Déployer une infrastructure de cybersécurité complète sur **Amazon Web Servi
 
 ## 🏗️ Architecture
 
-![Honeypot Architecture](./images/honeypot.png)
+![Honeypot Architecture](./docs/images/honeypot.png)
 
 ## 🔑 Mots-clés
 
