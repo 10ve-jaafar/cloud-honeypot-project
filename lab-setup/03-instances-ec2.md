@@ -55,4 +55,4 @@ ssh ubuntu@10.0.2.10
 ```
 
 ![Honeypot Instance Details](../docs/images/figure-02-instance-honeypot.png)
-![Bastion Instance Details](../docs/images/figure-04-instance-bast)
+![Bastion Instance Details](../docs/images/figure-04-instance-bastion.png)
