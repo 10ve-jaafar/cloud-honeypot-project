@@ -1,32 +1,31 @@
-# Pipeline de Collecte et Traitement des Données
+# Data Collection and Processing Pipeline
 
-## Flux de données — bout en bout
+## End-to-End Data Flow
 
 Honeypot (Cowrie JSON + OpenCanary logs)
-→ Filebeat (agent sur 10.0.1.215)
-→ Logstash port 5044 (sur 10.0.2.10)
+→ Filebeat (agent on 10.0.1.215)
+→ Logstash port 5044 (on 10.0.2.10)
 → Elasticsearch port 9200 (local)
-→ Kibana port 5601 (tunnel SSH depuis Bastion 10.0.1.37)
-→ Navigateur administrateur
+→ Kibana port 5601 (SSH tunnel from Bastion 10.0.1.37)
+→ Administrator's Browser
 
+## Enrichment Applied by Logstash
 
-## Enrichissement appliqué par Logstash
+1. **Field Addition**: `honeypot_type`, `honeypot_host_ip`
+2. **Timestamp Normalization** (ISO8601 → `@timestamp`)
+3. **GeoIP Enrichment**: Geolocation of `src_ip` / `src_host` (city, country, ASN, coordinates)
+4. **MITRE ATT&CK Categorization** based on `eventid`:
 
-1. **Ajout de champs** : `honeypot_type`, `honeypot_host_ip`
-2. **Normalisation des timestamps** (ISO8601 → @timestamp)
-3. **GeoIP** : géolocalisation de `src_ip` / `src_host` (ville, pays, ASN, coordonnées)
-4. **Catégorisation MITRE ATT&CK** selon `eventid` :
+| Cowrie eventid               | attack_category                |
+| ---------------------------- | ------------------------------ |
+| cowrie.login.success         | Initial_Access_ValidAccounts   |
+| cowrie.login.failed          | Credential_Access_BruteForce   |
+| cowrie.command.input         | Execution_CommandLineInterface |
+| cowrie.session.file_download | C2_Ingress_Tool_Transfer       |
 
-| eventid Cowrie | attack_category |
-|---|---|
-| cowrie.login.success | Initial_Access_ValidAccounts |
-| cowrie.login.failed | Credential_Access_BruteForce |
-| cowrie.command.input | Execution_CommandLineInterface |
-| cowrie.session.file_download | C2_Ingress_Tool_Transfer |
+5. **Data Cleanup**: Removal of unnecessary fields (`agent`, `ecs`, `input`, `log`)
 
-5. **Nettoyage** : suppression des champs inutiles (`agent`, `ecs`, `input`, `log`)
-
-## Exemple de document enrichi final
+## Example of the Final Enriched Document
 
 ```json
 {
@@ -47,4 +46,4 @@ Honeypot (Cowrie JSON + OpenCanary logs)
 }
 ```
 
-Voir le pipeline complet dans `configurations/logstash/honeypot.conf`
+See the complete pipeline in `configurations/logstash/honeypot.conf`.
