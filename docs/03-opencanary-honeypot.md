@@ -1,40 +1,40 @@
-# OpenCanary — Honeypot Multi-Services
+# OpenCanary — Multi-Service Honeypot
 
-## Présentation Générale
+## General Overview
 
-OpenCanary est un honeypot open-source **multi-protocoles** développé par Thinkst Applied Research, en **low-interaction** avec le principe du **zéro faux positif** : tout trafic reçu est par définition malveillant.
+OpenCanary is an open-source **multi-protocol honeypot** developed by Thinkst Applied Research. It is a **low-interaction** honeypot based on the **zero false-positive** principle: any traffic received is, by definition, considered malicious.
 
-| Caractéristique | Détail |
-|---|---|
-| Dépôt GitHub | https://github.com/thinkst/opencanary |
-| Documentation | https://opencanary.readthedocs.io |
-| Langage | Python 3 (Twisted) |
-| Protocoles supportés | Jusqu'à 14 (FTP, HTTP, MySQL, RDP, SMB, VNC, SSH, SNMP, NTP, Redis, SIP, Telnet, TFTP, Git) |
-| Instance déployée | i-0330e1658aac4ce4f — 10.0.1.215 |
+| Feature             | Details                                                                                   |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| GitHub Repository   | https://github.com/thinkst/opencanary                                                     |
+| Documentation       | https://opencanary.readthedocs.io                                                         |
+| Language            | Python 3 (Twisted)                                                                        |
+| Supported Protocols | Up to 14 (FTP, HTTP, MySQL, RDP, SMB, VNC, SSH, SNMP, NTP, Redis, SIP, Telnet, TFTP, Git) |
+| Deployed Instance   | i-0330e1658aac4ce4f — 10.0.1.215                                                          |
 
-## Services activés dans ce projet
+## Services Enabled in This Project
 
-| Service | Port | Résultat observé |
-|---|---|---|
-| VNC | 5900/TCP | **796 079 événements** en 3 semaines — service le plus scanné |
-| FTP | 21/TCP | Brute-force avec dictionnaires (admin/admin, anonymous) |
-| HTTP Admin | 8080/TCP | Fausse interface d'administration, scans Nessus/Shodan |
-| MySQL | 3306/TCP | Handshake authentique, tentatives root/[vide] |
+| Service    | Port     | Observed Result                                                |
+| ---------- | -------- | -------------------------------------------------------------- |
+| VNC        | 5900/TCP | **796,079 events** over 3 weeks — most scanned service         |
+| FTP        | 21/TCP   | Dictionary-based brute-force attempts (admin/admin, anonymous) |
+| HTTP Admin | 8080/TCP | Fake administration interface, Nessus/Shodan scans             |
+| MySQL      | 3306/TCP | Authentic handshake, root/[empty] login attempts               |
 
-Services **disponibles mais non activés** dans ce déploiement : RDP, SMB, Redis, Git, SIP, TFTP, SNMP, NTP (pour limiter la surface d'exposition).
+Services **available but not enabled** in this deployment: RDP, SMB, Redis, Git, SIP, TFTP, SNMP, NTP (to limit the exposure surface).
 
-## Comparaison Cowrie vs OpenCanary
+## Cowrie vs OpenCanary Comparison
 
-| Critère | Cowrie | OpenCanary |
-|---|---|---|
-| Type d'interaction | Moyenne (shell complet) | Basse (bannières protocole) |
-| Protocoles couverts | 2 (SSH + Telnet) | Jusqu'à 14 simultanément |
-| Profondeur d'analyse | Très élevée | Faible |
-| Volume de données | Modéré | Très élevé (796k events VNC) |
-| Objectif | Analyse comportementale post-exploitation | Détection précoce (early warning) |
-| Faux positifs | Quasi nuls | Nuls (zéro par design) |
-| Complémentarité | Capture CE QUE fait l'attaquant | Capture QUI attaque et QUELS services |
+| Criterion         | Cowrie                                | OpenCanary                                                        |
+| ----------------- | ------------------------------------- | ----------------------------------------------------------------- |
+| Interaction Type  | Medium (full shell)                   | Low (protocol banners)                                            |
+| Protocol Coverage | 2 (SSH + Telnet)                      | Up to 14 simultaneously                                           |
+| Analysis Depth    | Very high                             | Low                                                               |
+| Data Volume       | Moderate                              | Very high (796k VNC events)                                       |
+| Purpose           | Post-exploitation behavioral analysis | Early warning detection                                           |
+| False Positives   | Nearly zero                           | Zero (by design)                                                  |
+| Complementarity   | Captures **WHAT** the attacker does   | Captures **WHO** is attacking and **WHICH** services are targeted |
 
 ## Installation
 
-Voir `scripts/03-install-opencanary.sh` et `configurations/opencanary/opencanary.conf`
+See `scripts/03-install-opencanary.sh` and `configurations/opencanary/opencanary.conf`
