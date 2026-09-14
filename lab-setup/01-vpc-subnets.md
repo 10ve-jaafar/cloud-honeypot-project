@@ -1,9 +1,9 @@
-# Setup VPC et Subnets
+# VPC and Subnet Setup
 
-## Création du VPC
+## VPC Creation
 
 ```bash
-# Via console AWS ou CLI
+# Via AWS Console or CLI
 aws ec2 create-vpc \
   --cidr-block 10.0.0.0/16 \
   --region us-east-1 \
@@ -12,40 +12,40 @@ aws ec2 create-vpc \
 
 ## Subnets
 
-| Subnet | CIDR | AZ | Type |
-|---|---|---|---|
-| public subnet | 10.0.1.0/24 | us-east-1a | Public (Honeypot + Bastion) |
-| private subnet | 10.0.2.0/24 | us-east-1a | Privé (ELK Server) |
+| Subnet         | CIDR        | AZ         | Type                        |
+| -------------- | ----------- | ---------- | --------------------------- |
+| public subnet  | 10.0.1.0/24 | us-east-1a | Public (Honeypot + Bastion) |
+| private subnet | 10.0.2.0/24 | us-east-1a | Private (ELK Server)        |
 
 ```bash
-# Subnet public
+# Public subnet
 aws ec2 create-subnet --vpc-id <VPC_ID> --cidr-block 10.0.1.0/24 --availability-zone us-east-1a
 
-# Subnet privé
+# Private subnet
 aws ec2 create-subnet --vpc-id <VPC_ID> --cidr-block 10.0.2.0/24 --availability-zone us-east-1a
 ```
 
-## Internet Gateway (subnet public)
+## Internet Gateway (Public Subnet)
 
 ```bash
 aws ec2 create-internet-gateway --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=HONEYPOT-INTERNET-GATEWAY}]'
 aws ec2 attach-internet-gateway --vpc-id <VPC_ID> --internet-gateway-id <IGW_ID>
 ```
 
-## NAT Gateway (subnet privé — accès sortant uniquement)
+## NAT Gateway (Private Subnet — Outbound Access Only)
 
 ```bash
-# Allouer une Elastic IP
+# Allocate an Elastic IP
 aws ec2 allocate-address --domain vpc
 
-# Créer le NAT Gateway dans le subnet public
+# Create the NAT Gateway in the public subnet
 aws ec2 create-nat-gateway --subnet-id <PUBLIC_SUBNET_ID> --allocation-id <EIP_ALLOC_ID> \
   --tag-specifications 'ResourceType=natgateway,Tags=[{Key=Name,Value=ELK_Nat_Gateway}]'
 ```
 
 ## Route Tables
 
-**Route table publique** : local + 0.0.0.0/0 → Internet Gateway
-**Route table privée** : local + 0.0.0.0/0 → NAT Gateway
+**Public route table**: local + 0.0.0.0/0 → Internet Gateway
+**Private route table**: local + 0.0.0.0/0 → NAT Gateway
 
 ![Resource Map](../docs/images/figure-01-resource-map-vpc.png)
