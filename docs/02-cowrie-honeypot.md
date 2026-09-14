@@ -1,55 +1,61 @@
-# Cowrie — Honeypot SSH et Telnet
+# Cowrie — SSH and Telnet Honeypot
 
-## Présentation Générale
+## General Overview
 
-Cowrie est un honeypot open-source de **moyenne interaction** développé initialement par Michel Oosterhof en 2009 (Kippo), réécrit et renommé Cowrie en 2014.
+Cowrie is an open-source **medium-interaction honeypot** initially developed by Michel Oosterhof in 2009 (Kippo), rewritten and renamed Cowrie in 2014.
 
-| Caractéristique | Détail |
-|---|---|
-| Dépôt GitHub | https://github.com/cowrie/cowrie |
-| Documentation | https://cowrie.readthedocs.io |
-| Langage | Python 3 (virtualenv dédié) |
-| Type d'interaction | Medium-interaction (émulation shell complète) |
-| Protocoles supportés | SSH v2 (paramiko) + Telnet |
-| Ports dans ce projet | 22/TCP, 2222/TCP (SSH) — 23/TCP (Telnet) |
-| Instance déployée | i-0330e1658aac4ce4f — 10.0.1.215 |
+| Feature               | Details                                   |
+| --------------------- | ----------------------------------------- |
+| GitHub Repository     | https://github.com/cowrie/cowrie          |
+| Documentation         | https://cowrie.readthedocs.io             |
+| Language              | Python 3 (dedicated virtualenv)           |
+| Interaction Type      | Medium-interaction (full shell emulation) |
+| Supported Protocols   | SSH v2 (Paramiko) + Telnet                |
+| Ports in this project | 22/TCP, 2222/TCP (SSH) — 23/TCP (Telnet)  |
+| Deployed Instance     | i-0330e1658aac4ce4f — 10.0.1.215          |
 
-## Architecture Interne
+## Internal Architecture
 
-| Composant | Rôle | Technologie |
-|---|---|---|
-| SSH Server | Négocie clés et algorithmes | Paramiko + Twisted |
-| Telnet Server | Connexions non chiffrées | Twisted Protocol |
-| Shell Emulator | Simule un shell bash interactif | Python — shell.py |
-| Filesystem (honeyfs) | Faux système de fichiers Linux | Fichiers statiques |
-| Command Handler | Interprète les commandes tapées | Python — commands/ |
-| SFTP/SCP Handler | Transferts de fichiers | Paramiko SFTP |
-| Output Plugins | JSON, MySQL, Splunk, ELK | Modules output/ |
-| Download Catcher | Capture les fichiers téléchargés | urllib + hash |
+| Component            | Role                                     | Technology         |
+| -------------------- | ---------------------------------------- | ------------------ |
+| SSH Server           | Negotiates keys and algorithms           | Paramiko + Twisted |
+| Telnet Server        | Handles unencrypted connections          | Twisted Protocol   |
+| Shell Emulator       | Simulates an interactive bash shell      | Python — shell.py  |
+| Filesystem (honeyfs) | Fake Linux filesystem                    | Static files       |
+| Command Handler      | Interprets commands entered by attackers | Python — commands/ |
+| SFTP/SCP Handler     | Handles file transfers                   | Paramiko SFTP      |
+| Output Plugins       | JSON, MySQL, Splunk, ELK                 | output/ modules    |
+| Download Catcher     | Captures downloaded files                | urllib + hash      |
 
-## Services Simulés
+## Simulated Services
 
-### SSH (Ports 22 et 2222)
-Bannière `SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.5`, authentification par mot de passe uniquement (clé publique refusée), sessions ASCIINEMA rejouables.
+### SSH (Ports 22 and 2222)
+
+Banner: `SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.5`
+
+Password-based authentication only (public key authentication is rejected). Sessions can be replayed using ASCIINEMA.
 
 ### Telnet (Port 23)
-Cible particulièrement les botnets IoT type Mirai qui utilisent Telnet avec des credentials par défaut.
 
-## Système de Credentials — userdb.txt
+Particularly targets IoT botnets such as Mirai, which commonly use Telnet with default credentials.
 
-Voir `configurations/cowrie/userdb.txt`. Format : `username:x:password` où `*` accepte n'importe quel mot de passe.
+## Credentials System — userdb.txt
 
-## Événements JSON produits
+See `configurations/cowrie/userdb.txt`.
 
-| Event ID | Déclencheur |
-|---|---|
-| cowrie.session.connect | Nouvelle connexion TCP |
-| cowrie.login.failed | Échec d'authentification |
-| cowrie.login.success | Authentification réussie |
-| cowrie.command.input | Commande tapée par l'attaquant |
-| cowrie.session.file_download | Fichier téléchargé (wget/curl) |
-| cowrie.session.closed | Fin de session (durée en secondes) |
+Format: `username:x:password`, where `*` accepts any password.
+
+## Generated JSON Events
+
+| Event ID                     | Trigger                              |
+| ---------------------------- | ------------------------------------ |
+| cowrie.session.connect       | New TCP connection                   |
+| cowrie.login.failed          | Authentication failure               |
+| cowrie.login.success         | Successful authentication            |
+| cowrie.command.input         | Command entered by the attacker      |
+| cowrie.session.file_download | File downloaded (wget/curl)          |
+| cowrie.session.closed        | End of session (duration in seconds) |
 
 ## Installation
 
-Voir `scripts/02-install-cowrie.sh`
+See `scripts/02-install-cowrie.sh`
