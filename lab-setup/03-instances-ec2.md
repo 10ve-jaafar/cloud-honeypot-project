@@ -1,14 +1,14 @@
-# Instances EC2
+# EC2 Instances
 
-## Récapitulatif
+## Overview
 
-| Instance | Type | AMI | Subnet | Rôle |
-|---|---|---|---|---|
-| Honeypot | t3.micro | Ubuntu Server 22.04 LTS | public | Cowrie + OpenCanary + Filebeat |
-| Bastion | t3.micro | Ubuntu Server 22.04 LTS | public | Jump server |
-| elk_server | t3.large | Ubuntu Server 22.04 LTS | private | Elasticsearch + Logstash + Kibana |
+| Instance   | Type     | AMI                     | Subnet  | Role                              |
+| ---------- | -------- | ----------------------- | ------- | --------------------------------- |
+| Honeypot   | t3.micro | Ubuntu Server 22.04 LTS | Public  | Cowrie + OpenCanary + Filebeat    |
+| Bastion    | t3.micro | Ubuntu Server 22.04 LTS | Public  | Jump server                       |
+| elk_server | t3.large | Ubuntu Server 22.04 LTS | Private | Elasticsearch + Logstash + Kibana |
 
-## Commandes de lancement (exemple CLI)
+## Launch Commands (CLI Example)
 
 ```bash
 # Honeypot
@@ -17,7 +17,7 @@ aws ec2 run-instances \
   --instance-type t3.micro \
   --subnet-id <PUBLIC_SUBNET_ID> \
   --security-group-ids <HONEYPOT_SG_ID> \
-  --key-name votre-cle \
+  --key-name your-key \
   --associate-public-ip-address \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Honeypot}]'
 
@@ -27,33 +27,32 @@ aws ec2 run-instances \
   --instance-type t3.micro \
   --subnet-id <PUBLIC_SUBNET_ID> \
   --security-group-ids <BASTION_SG_ID> \
-  --key-name votre-cle \
+  --key-name your-key \
   --associate-public-ip-address \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Bastion}]'
 
-# ELK Server (t3.large — 8GB RAM nécessaire pour Elasticsearch)
+# ELK Server (t3.large — 8 GB RAM required for Elasticsearch)
 aws ec2 run-instances \
   --image-id ami-xxxxxxxx \
   --instance-type t3.large \
   --subnet-id <PRIVATE_SUBNET_ID> \
   --security-group-ids <ELK_SG_ID> \
-  --key-name votre-cle \
+  --key-name your-key \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=elk_server}]'
 ```
 
-## Connexion via Bastion (jump server)
+## Connection via Bastion (Jump Server)
 
 ```bash
-# Se connecter à la Bastion
-ssh -i votre-cle.pem ubuntu@<IP_PUBLIQUE_BASTION>
+# Connect to the Bastion
+ssh -i your-key.pem ubuntu@<BASTION_PUBLIC_IP>
 
-# Depuis la Bastion, rebondir vers le honeypot (port admin 4422)
+# From the Bastion, connect to the honeypot (admin port 4422)
 ssh -p 4422 ubuntu@10.0.1.215
 
-# Depuis la Bastion, rebondir vers le serveur ELK
+# From the Bastion, connect to the ELK server
 ssh ubuntu@10.0.2.10
 ```
 
-![Détails instance Honeypot](../docs/images/figure-02-instance-honeypot.png)
-![Détails instance Bastion](../docs/images/figure-04-instance-bastion.png)
-![Détails instance ELK](../docs/images/figure-06-instance-elk.png)
+![Honeypot Instance Details](../docs/images/figure-02-instance-honeypot.png)
+![Bastion Instance Details](../docs/images/figure-04-instance-bast)
