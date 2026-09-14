@@ -4,8 +4,8 @@
 
 Accessible at `http://localhost:5601` through the SSH tunnel. Covers 3 weeks of observation (May 2026).
 
-![Dashboard View 1](./docs/images/figure-09-dashboard-1.png)
-![Dashboard View 2](./docs/images/figure-10-dashboard-2.png)
+![Dashboard View 1](./docs/images/figure-09-dashboard-passwords-severity.png)
+![Dashboard View 2](./docs/images/figure-10-dashboard-map-services.png)
 
 ## Summary of Actual Collected Metrics
 
