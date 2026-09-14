@@ -1,28 +1,32 @@
-# Architecture de l'Infrastructure AWS
+# AWS Infrastructure Architecture
 
-## Vue d'ensemble — VPC vpc_honeypot
+## Overview — VPC vpc_honeypot
 
-L'ensemble de l'infrastructure est déployé dans un VPC dédié nommé `vpc_honeypot` avec le CIDR `10.0.0.0/16`, localisé dans la région **us-east-1 (N. Virginia)**.
+The entire infrastructure is deployed within a dedicated VPC named `vpc_honeypot`, using the CIDR `10.0.0.0/16`, located in the **us-east-1 (N. Virginia)** region.
 
-![Resource Map du VPC](./images/figure-01-resource-map-vpc.png)
-*Figure 1 - Resource Map du VPC vpc_honeypot (console AWS)*
+![VPC Resource Map](./images/figure-01-resource-map-vpc.png)
+*Figure 1 - Resource Map of the vpc_honeypot VPC (AWS Console)*
 
-## Organisation Réseau
+## Network Organization
 
-| Composant réseau | Valeur réelle | Rôle |
-|---|---|---|
-| VPC | vpc_honeypot — 10.0.0.0/16 | Réseau virtuel isolé du projet |
-| Subnet Public | public subnet — 10.0.1.0/24 — us-east-1a | Héberge Honeypot + Bastion (exposés) |
-| Subnet Privé | private subnet — 10.0.2.0/24 — us-east-1a | Héberge ELK Server (non exposé) |
-| Internet Gateway | HONEYPOT-INTERNET-GATEWAY | Accès Internet → subnet public |
-| NAT Gateway | ELK_Nat_Gateway (Public NAT, 1 EIP) | Accès Internet sortant → subnet privé |
-| Route Table Publique | 2 routes (local + IGW 0.0.0.0/0) | Routage du subnet public vers Internet |
-| Route Table Privée | 2 routes (local + NAT 0.0.0.0/0) | Routage du subnet privé via NAT GW |
+| Network Component   | Actual Value                              | Role                                              |
+| ------------------- | ----------------------------------------- | ------------------------------------------------- |
+| VPC                 | vpc_honeypot — 10.0.0.0/16                | Isolated virtual network for the project          |
+| Public Subnet       | public subnet — 10.0.1.0/24 — us-east-1a  | Hosts Honeypot + Bastion (Internet-exposed)       |
+| Private Subnet      | private subnet — 10.0.2.0/24 — us-east-1a | Hosts ELK Server (not Internet-exposed)           |
+| Internet Gateway    | HONEYPOT-INTERNET-GATEWAY                 | Internet access → public subnet                   |
+| NAT Gateway         | ELK_Nat_Gateway (Public NAT, 1 EIP)       | Outbound Internet access → private subnet         |
+| Public Route Table  | 2 routes (local + IGW 0.0.0.0/0)          | Routes public subnet traffic to the Internet      |
+| Private Route Table | 2 routes (local + NAT 0.0.0.0/0)          | Routes private subnet traffic through NAT Gateway |
 
-## Schéma de la chaîne de fonctionnement complète
+## Complete Operational Flow
 
-![Schéma chaîne ELK](./images/figure-08-schema-chaine-elk.png)
+![ELK Pipeline Diagram](./images/figure-08-schema-chaine-elk.png)
 
-*Figure 8 - Schéma de la chaîne de fonctionnement complète de l'Elastic Stack dans le projet Honeypot AWS*
+*Figure 8 - Complete operational flow of the Elastic Stack in the AWS Honeypot project*
 
-**Lecture du schéma :** Zone orange (subnet public 10.0.1.0/24) : les honeypots Cowrie et OpenCanary génèrent des logs sur l'instance 10.0.1.215 ; Filebeat les collecte et les envoie via TCP 5044 vers le serveur ELK. Zone bleue (subnet privé 10.0.2.0/24) : Logstash reçoit, parse et enrichit les événements (GeoIP, MITRE ATT&CK), les indexe dans Elasticsearch, et Kibana les visualise. L'analyste accède à Kibana via un tunnel SSH depuis la Bastion Host, sans jamais exposer le port 5601 sur Interne
+**Diagram overview:** The orange zone (public subnet `10.0.1.0/24`) contains the Cowrie and OpenCanary honeypots, which generate logs on instance `10.0.1.215`. Filebeat collects these logs and sends them via TCP port `5044` to the ELK server.
+
+The blue zone (private subnet `10.0.2.0/24`) contains the ELK components. Logstash receives, parses, and enriches the events (GeoIP, MITRE ATT&CK), then indexes them in Elasticsearch, while Kibana provides visualization.
+
+The analyst accesses Kibana through an SSH tunnel from the Bastion Host, without exposing port `5601` directly to the Internet.
