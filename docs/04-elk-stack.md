@@ -1,63 +1,63 @@
-# ELK Stack — Rôles, Architecture et Installation
+# ELK Stack — Roles, Architecture and Installation
 
-## Vue d'ensemble
+## Overview
 
-La stack ELK constitue le cerveau analytique de l'infrastructure, déployée sur `elk_server` (i-0cd116b18750b48c9 — t3.large — 10.0.2.10) dans le subnet privé.
+The ELK Stack serves as the analytical core of the infrastructure, deployed on `elk_server` (i-0cd116b18750b48c9 — t3.large — 10.0.2.10) within the private subnet.
 
-| Composant | Instance / Port | Rôle | Technologie |
-|---|---|---|---|
-| Filebeat | Honeypot 10.0.1.215 | Collecte et transport des logs | Go (< 50 MB RAM) |
-| Logstash | ELK Server :5044 | Ingestion, parsing, enrichissement | JVM — pipeline ETL |
-| Elasticsearch | ELK Server :9200 | Stockage, indexation, recherche | JVM — moteur NoSQL |
-| Kibana | ELK Server :5601 | Visualisation, dashboards | Node.js |
+| Component     | Instance / Port     | Role                           | Technology         |
+| ------------- | ------------------- | ------------------------------ | ------------------ |
+| Filebeat      | Honeypot 10.0.1.215 | Log collection and transport   | Go (< 50 MB RAM)   |
+| Logstash      | ELK Server :5044    | Ingestion, parsing, enrichment | JVM — ETL pipeline |
+| Elasticsearch | ELK Server :9200    | Storage, indexing, search      | JVM — NoSQL engine |
+| Kibana        | ELK Server :5601    | Visualization, dashboards      | Node.js            |
 
-Flux unidirectionnel : **Filebeat → Logstash → Elasticsearch → Kibana**
+Unidirectional flow: **Filebeat → Logstash → Elasticsearch → Kibana**
 
 ## Elasticsearch
 
-| Caractéristique | Valeur |
-|---|---|
-| Port API REST | 9200/TCP |
-| Index | honeypot-logs-YYYY.MM.dd |
-| Politique ILM | 7j hot → 30j warm → suppression auto |
-| Heap JVM | 4 GB (t3.large, 8GB RAM) |
-| Authentification | xpack.security activée |
+| Feature        | Value                                  |
+| -------------- | -------------------------------------- |
+| REST API Port  | 9200/TCP                               |
+| Index          | honeypot-logs-YYYY.MM.dd               |
+| ILM Policy     | 7d hot → 30d warm → automatic deletion |
+| JVM Heap       | 4 GB (t3.large, 8 GB RAM)              |
+| Authentication | xpack.security enabled                 |
 
-→ Installation : `scripts/04-install-elasticsearch.sh`
-→ Config : `configurations/elasticsearch/elasticsearch.yml`
+→ Installation: `scripts/04-install-elasticsearch.sh`
+→ Configuration: `configurations/elasticsearch/elasticsearch.yml`
 
 ## Logstash
 
-Pipeline en 3 étapes : **Input** (beats :5044) → **Filter** (mutate, geoip, date, catégorisation MITRE ATT&CK) → **Output** (elasticsearch).
+Three-stage pipeline: **Input** (beats :5044) → **Filter** (mutate, geoip, date, MITRE ATT&CK categorization) → **Output** (Elasticsearch).
 
-→ Installation : `scripts/05-install-logstash.sh`
-→ Config : `configurations/logstash/honeypot.conf`
+→ Installation: `scripts/05-install-logstash.sh`
+→ Configuration: `configurations/logstash/honeypot.conf`
 
 ## Kibana
 
-Accessible **uniquement via tunnel SSH** depuis la Bastion Host (aucune exposition directe sur Internet) :
+Accessible **only through an SSH tunnel** from the Bastion Host (no direct exposure to the Internet):
 
 ```bash
 ssh -L 5601:10.0.2.10:5601 ubuntu@3.221.1.82
 ```
 
-Puis ouvrir `http://localhost:5601` dans le navigateur.
+Then open `http://localhost:5601` in the browser.
 
-→ Installation : `scripts/06-install-kibana.sh`
-→ Config : `configurations/kibana/kibana.yml`
+→ Installation: `scripts/06-install-kibana.sh`
+→ Configuration: `configurations/kibana/kibana.yml`
 
-## Filebeat (sur l'instance Honeypot)
+## Filebeat (on the Honeypot Instance)
 
-Surveille `cowrie.json` et `opencanary.log`, transmet vers Logstash (10.0.2.10:5044) avec un registre garantissant zéro perte / zéro doublon.
+Monitors `cowrie.json` and `opencanary.log`, forwarding logs to Logstash (10.0.2.10:5044) with a registry ensuring zero data loss and zero duplication.
 
-→ Installation : `scripts/07-install-filebeat-honeypot.sh`
-→ Config : `configurations/filebeat/filebeat.yml`
+→ Installation: `scripts/07-install-filebeat-honeypot.sh`
+→ Configuration: `configurations/filebeat/filebeat.yml`
 
-## Synthèse des flux
+## Data Flow Summary
 
-| Flux | Source | Destination | Port |
-|---|---|---|---|
-| Logs Cowrie → Filebeat | Fichier local | Filebeat (10.0.1.215) | Local |
-| Filebeat → Logstash | 10.0.1.215 | 10.0.2.10 | 5044/TCP |
-| Logstash → Elasticsearch | localhost | localhost | 9200/TCP |
-| Admin → Kibana | Navigateur via Bastion | 10.0.2.10 | 5601 (tunnel SSH) |
+| Flow                     | Source              | Destination           | Port              |
+| ------------------------ | ------------------- | --------------------- | ----------------- |
+| Cowrie Logs → Filebeat   | Local file          | Filebeat (10.0.1.215) | Local             |
+| Filebeat → Logstash      | 10.0.1.215          | 10.0.2.10             | 5044/TCP          |
+| Logstash → Elasticsearch | localhost           | localhost             | 9200/TCP          |
+| Admin → Kibana           | Browser via Bastion | 10.0.2.10             | 5601 (SSH tunnel) |
