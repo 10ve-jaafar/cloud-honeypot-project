@@ -1,4 +1,4 @@
-# 🍯 Cloud Honeypot – Real-Time Attack Detection
+#  Cloud Honeypot – Real-Time Attack Detection
 
 <div align="center">
 
@@ -11,19 +11,19 @@
 
 </div>
 
-## 🎯 Project Objective
+##  Project Objective
 
 Deploy a complete cybersecurity infrastructure on **Amazon Web Services (AWS / us-east-1)**, combining honeypots (Cowrie + OpenCanary) with a centralized platform for collecting, analyzing, and visualizing attack data using the **ELK Stack** (Elasticsearch, Logstash, Kibana) and Filebeat.
 
-## 🏗️ Architecture
+##  Architecture
 
 ![Honeypot Architecture](./docs/images/honeypot.png)
 
-## 🔑 Keywords
+##  Keywords
 
 Honeypot · OpenCanary · Cowrie SSH Honeypot · AWS · Elastic Stack (ELK) · Threat Intelligence · VPC · GeoIP Enrichment · MITRE ATT&CK · Bastion Host · Security Group · Cyber Deception · VirusTotal Lookup
 
-## 📊 Key Results (3 Weeks of Observation — May 2026)
+##  Key Results (3 Weeks of Observation — May 2026)
 
 * **796,079** VNC scans detected (most targeted service)
 * **133,441** OpenCanary events recorded in a single day (peak on 05/22/2026)
@@ -31,7 +31,7 @@ Honeypot · OpenCanary · Cowrie SSH Honeypot · AWS · Elastic Stack (ELK) · T
 * **49.53%** of threats classified as **"Reconnaissance"** (MITRE ATT&CK)
 * IP **186.10.86.130** confirmed malicious by VirusTotal (14/91 vendors)
 
-## 📁 Repository Structure
+##  Repository Structure
 
 | Directory         | Contents                                                              |
 | ----------------- | --------------------------------------------------------------------- |
@@ -40,18 +40,18 @@ Honeypot · OpenCanary · Cowrie SSH Honeypot · AWS · Elastic Stack (ELK) · T
 | `configurations/` | Actual configuration files (Cowrie, OpenCanary, ELK, Filebeat)        |
 | `lab-setup/`      | AWS deployment documentation (VPC, Security Groups, EC2)              |
 
-## 🚀 Quick Start
+##  Quick Start
 
 1. Check `lab-setup/` to recreate the AWS infrastructure (VPC, subnets, Security Groups, EC2 instances)
 2. Run the scripts in `scripts/` in numerical order on the corresponding instances
 3. Copy the files from `configurations/` to their respective locations
 4. Check `docs/06-visualisations-kibana.md` to recreate the dashboards
 
-## ⚠️ Ethical and Legal Framework
+##  Ethical and Legal Framework
 
 This project was conducted strictly for academic purposes using a personal AWS account. The infrastructure is entirely owned and controlled by the operator. No counterattacks are performed against identified sources. See `docs/08-securite-ethique.md`.
 
-## 📚 References
+##  References
 
 * [Cowrie Documentation](https://cowrie.readthedocs.io)
 * [OpenCanary Documentation](https://opencanary.readthedocs.io)
