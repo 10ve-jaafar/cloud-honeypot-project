@@ -57,7 +57,3 @@ This project was conducted strictly for academic purposes using a personal AWS a
 * [OpenCanary Documentation](https://opencanary.readthedocs.io)
 * [Elastic Stack Documentation](https://www.elastic.co/guide/)
 * [MITRE ATT&CK Framework](https://attack.mitre.org)
-
-## 📄 License
-
-Academic Project — ENSA Safi 2025/2026
